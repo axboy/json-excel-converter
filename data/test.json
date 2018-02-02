@@ -1,0 +1,16 @@
+{
+    "zh-cn": "简体中文",
+    "en": "英文",
+    "ROLE_ADMIN": "系统管理员",
+    "ROLE_USER": "普通用户",
+    "global": {
+        "username": "当前用户",
+        "orgName": "当前机构",
+        "title": "Bolemart",
+        "menu": {
+            "home": "首页",
+            "putAwayMenu": "收起菜单",
+            "expandMenu": "展开菜单"
+        }
+    }
+}
