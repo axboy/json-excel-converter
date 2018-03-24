@@ -21,7 +21,7 @@ class ToolsApplication {
     }
 
     /**
-     *
+     * json转excel，多层结构
      * @param file
      */
     @RequestMapping(value = "/json2excel", method = RequestMethod.POST)
@@ -33,7 +33,7 @@ class ToolsApplication {
     }
 
     /**
-     *
+     * json转excel，多层结构
      * @param file
      */
     @RequestMapping(value = "/json2excelByFile", method = RequestMethod.POST)
@@ -48,7 +48,7 @@ class ToolsApplication {
     }
 
     /**
-     *
+     * excel转json，多层结构
      * @param file
      */
     @RequestMapping(value = "/excel2json", method = RequestMethod.POST)
@@ -58,5 +58,36 @@ class ToolsApplication {
         Map resp = FormatUtil.mergeMap(data)
         //response.setHeader("Content-disposition", "attachment;filename=${fileName}-" + System.currentTimeMillis() + ".json")
         return resp
+    }
+
+    /**
+     * 单层，多列json，转excel
+     * @param map
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/multiRowJson2Excel", method = RequestMethod.POST)
+    ResponseEntity<?> multiRowJson2Excel(@RequestBody List<Map> data, HttpServletResponse response) {
+        response.setHeader("Content-disposition", "attachment;filename=file-" + System.currentTimeMillis() + ".xlsx")
+        ExcelUtils.createExcelByList(response.getOutputStream(), data)
+        return ResponseEntity.ok().build()
+    }
+
+    /**
+     * 单层，多列json，转excel
+     * @param map
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/multiRowJson2ExcelByFile", method = RequestMethod.POST)
+    ResponseEntity<?> multiRowJson2ExcelByFile(MultipartFile file, HttpServletResponse response) {
+
+        def fileName = file.getName()
+        byte[] bytes = file.getBytes()
+        String jsonStr = new String(bytes, "UTF-8")
+        List<Map> data = FormatUtil.json2ListMap(jsonStr)
+        response.setHeader("Content-disposition", "attachment;filename=${fileName}-" + System.currentTimeMillis() + ".xlsx")
+        ExcelUtils.createExcelByList(response.getOutputStream(), data)
+        return ResponseEntity.ok().build()
     }
 }

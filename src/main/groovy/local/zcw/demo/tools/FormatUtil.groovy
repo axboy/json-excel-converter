@@ -22,6 +22,18 @@ class FormatUtil {
     }
 
     /**
+     * 将json字符串转为List<Map>对象
+     * @param jsonStr
+     * @return
+     */
+    static List<Map> json2ListMap(String jsonStr) {
+        def parser = new JsonSlurper().setType(JsonParserType.LAX)
+        parser.setMaxSizeForInMemory(Integer.MAX_VALUE)
+        def result = parser.parseText(jsonStr) as List<Map>
+        return result
+    }
+
+    /**
      * 把单层map转换为对象型
      * @param data
      * @return
@@ -41,7 +53,7 @@ class FormatUtil {
                 //最后一层
                 if (index == arr.length) {
                     tmp.put(k, value)
-                    break;
+                    break
                 }
 
                 //非最后一层

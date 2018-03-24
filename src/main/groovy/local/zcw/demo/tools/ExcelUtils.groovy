@@ -12,6 +12,26 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
  */
 class ExcelUtils {
 
+    static OutputStream createExcelByList(OutputStream out, List<Map> data) {
+        List head = []
+        List<List> content = []
+        if (data.size() == 0) {
+            return out
+        }
+        data[0].each { k, v ->
+            head.add(k)
+        }
+        data.each { colMap ->
+            List colList = []
+            head.each { key ->
+                colList.add(colMap[key])
+            }
+            content.add(colList)
+        }
+        return createExcel(out, head, content)
+    }
+
+
     static OutputStream createExcelByMap(OutputStream out, List<String> head, Map<String, String> content) {
         List<List<String>> list = []
         content.each { String k, String v ->
@@ -75,7 +95,7 @@ class ExcelUtils {
         XSSFWorkbook wb = new XSSFWorkbook(is)
         XSSFSheet sheet = wb.getSheetAt(0)        //只处理第一个sheet
         int lastRowNum = sheet.getLastRowNum()
-        for (int i = 0; i < lastRowNum; i++) {
+        for (int i = 0; i <= lastRowNum; i++) {
             XSSFRow xssfRow = sheet.getRow(i)
             String row1 = getStringValue(xssfRow.getCell(0))
             String row2 = getStringValue(xssfRow.getCell(1))
